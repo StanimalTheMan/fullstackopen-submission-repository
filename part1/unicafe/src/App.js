@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 const Statistic = ({ text, value }) => (
-  <div>
+  <td>
     {text} {value}
-  </div>
+  </td>
 );
 
 const Statistics = ({
@@ -25,12 +25,28 @@ const Statistics = ({
     statistics = (
       <>
         <h1>statistics</h1>
-        <Statistic text="good" value={good} />
-        <Statistic text="neutral" value={neutral} />
-        <Statistic text="bad" value={bad} />
-        <Statistic text="all" value={total} />
-        <Statistic text="average" value={average} />
-        <Statistic text="positive" value={positive} />
+        <table>
+          <tbody>
+            <tr>
+              <Statistic text="good" value={good} />
+            </tr>
+            <tr>
+              <Statistic text="neutral" value={neutral} />
+            </tr>
+            <tr>
+              <Statistic text="bad" value={bad} />
+            </tr>
+            <tr>
+              <Statistic text="all" value={total} />
+            </tr>
+            <tr>
+              <Statistic text="average" value={average} />
+            </tr>
+            <tr>
+              <Statistic text="positive" value={positive} />
+            </tr>
+          </tbody>
+        </table>
       </>
     );
   }
@@ -78,7 +94,6 @@ const App = () => {
         average={average}
         positive={positive}
       />
-      <Statistic />
     </div>
   );
 };
