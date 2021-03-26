@@ -1,74 +1,68 @@
 import React from "react";
 
-const Header = (props) => {
-  console.log(props);
-  return <h1>{props.course.name}</h1>;
+const Header = ({ name }) => {
+  return <h1>{name}</h1>;
 };
 
-const Part = (props) => {
+const Total = ({ course }) => {
+  const sum =
+    course.parts[0].exercises +
+    course.parts[1].exercises +
+    course.parts[2].exercises;
+  return <p>Number of exercises {sum}</p>;
+};
+
+const Part = ({ part }) => {
   return (
     <p>
-      {props.name} {props.exercises}
+      {part.name} {part.exercises}
     </p>
   );
 };
 
-const Content = (props) => {
+const Content = ({ parts }) => {
   return (
     <div>
-      <Part
-        name={props.course.parts[0].name}
-        exercises={props.course.parts[0].exercises}
-      />
-      <Part
-        name={props.course.parts[1].name}
-        exercises={props.course.parts[1].exercises}
-      />
-      <Part
-        name={props.course.parts[2].name}
-        exercises={props.course.parts[2].exercises}
-      />
+      {parts.map((part) => (
+        <Part key={part.id} part={part} />
+      ))}
     </div>
   );
 };
 
-const Total = (props) => {
+const Course = ({ course }) => {
   return (
-    <p>
-      Number of exercises{" "}
-      {props.course.parts[0].exercises +
-        props.course.parts[1].exercises +
-        props.course.parts[2].exercises}
-    </p>
+    <>
+      <Header name={course.name} />
+      <Content parts={course.parts} />
+    </>
   );
 };
 
 const App = () => {
   const course = {
+    id: 1,
     name: "Half Stack application development",
     parts: [
       {
         name: "Fundamentals of React",
         exercises: 10,
+        id: 1,
       },
       {
         name: "Using props to pass data",
         exercises: 7,
+        id: 2,
       },
       {
         name: "State of a component",
         exercises: 14,
+        id: 3,
       },
     ],
   };
 
-  return (
-    <div>
-      <Header course={course} />
-      <Content course={course} />
-      <Total course={course} />
-    </div>
-  );
+  return <Course course={course} />;
 };
 
 export default App;
