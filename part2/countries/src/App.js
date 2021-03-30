@@ -13,10 +13,31 @@ const App = () => {
     });
   }, []);
 
+  const handleChange = (e) => {
+    setCountriesFilter(e.target.value);
+  };
+
+  const countriesToShow = countries.filter((country) =>
+    country.name.toLowerCase().includes(countriesFilter.toLowerCase())
+  );
+
+  let userFeedback = null;
+  const countriesToShowLength = countriesToShow.length;
+  if (countriesToShowLength > 10) {
+    userFeedback = <p>Too many matches, specify another filter</p>;
+  } else if (countriesToShowLength > 1 && countriesToShowLength <= 10) {
+    userFeedback = countriesToShow.map((country) => (
+      <li key={country.name}>{country.name}</li>
+    ));
+  } else {
+    userFeedback = "only one";
+  }
+
   return (
     <>
       find countries
-      <input />
+      <input value={countriesFilter} onChange={handleChange} />
+      {userFeedback}
     </>
   );
 };
