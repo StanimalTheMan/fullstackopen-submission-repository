@@ -30,7 +30,21 @@ const App = () => {
       <li key={country.name}>{country.name}</li>
     ));
   } else {
-    userFeedback = "only one";
+    let country = countriesToShow[0];
+    userFeedback = (
+      <div>
+        <h1>{country.name}</h1>
+        <p>capital {country.capital}</p>
+        <p>population {country.population}</p>
+        <h2>languages</h2>
+        <ul>
+          {country.languages.map((language) => (
+            <li key={language.name}>{language.name}</li>
+          ))}
+        </ul>
+        <img src={country.flag} alt={country.name} width={50} height={50} />
+      </div>
+    );
   }
 
   return (
