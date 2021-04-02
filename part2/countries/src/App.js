@@ -4,6 +4,7 @@ import axios from "axios";
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [countriesFilter, setCountriesFilter] = useState("");
+  const [countrySelected, setCountrySelected] = useState("");
 
   useEffect(() => {
     axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
@@ -15,6 +16,11 @@ const App = () => {
 
   const handleChange = (e) => {
     setCountriesFilter(e.target.value);
+    setCountrySelected("");
+  };
+
+  const showCountryDetails = (country) => {
+    setCountrySelected(country);
   };
 
   const countriesToShow = countries.filter((country) =>
@@ -27,9 +33,33 @@ const App = () => {
     userFeedback = <p>Too many matches, specify another filter</p>;
   } else if (countriesToShowLength > 1 && countriesToShowLength <= 10) {
     userFeedback = countriesToShow.map((country) => (
-      <li key={country.name}>{country.name}</li>
+      <li key={country.name}>
+        {country.name}{" "}
+        <button onClick={() => showCountryDetails(country)}>show</button>
+      </li>
     ));
-  } else {
+    if (countrySelected) {
+      userFeedback = (
+        <div>
+          <h1>{countrySelected.name}</h1>
+          <p>capital {countrySelected.capital}</p>
+          <p>population {countrySelected.population}</p>
+          <h2>languages</h2>
+          <ul>
+            {countrySelected.languages.map((language) => (
+              <li key={language.name}>{language.name}</li>
+            ))}
+          </ul>
+          <img
+            src={countrySelected.flag}
+            alt={countrySelected.name}
+            width={50}
+            height={50}
+          />
+        </div>
+      );
+    }
+  } else if (countriesToShowLength === 1) {
     let country = countriesToShow[0];
     userFeedback = (
       <div>
