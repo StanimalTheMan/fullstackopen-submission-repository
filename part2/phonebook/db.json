@@ -1,49 +1,14 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
+      "name": "john lele",
+      "number": "9182932221",
       "id": 1
     },
     {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
+      "name": "lulu kiim",
+      "number": "9172823432",
       "id": 2
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
-      "name": "John Lee",
-      "number": "9182782821",
-      "id": 5
-    },
-    {
-      "name": "David Liotta",
-      "number": "9172831234",
-      "id": 6
-    },
-    {
-      "name": "Terrence Lee",
-      "number": "9172822921",
-      "id": 7
-    },
-    {
-      "name": "James McCann",
-      "number": "9172802921",
-      "id": 8
-    },
-    {
-      "name": "Stephanie Kim",
-      "number": "9172811912",
-      "id": 9
     }
   ]
 }

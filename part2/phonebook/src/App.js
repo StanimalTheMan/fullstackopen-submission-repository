@@ -27,17 +27,22 @@ const PersonForm = ({
   );
 };
 
-const Persons = ({ filteredNumbers }) => {
+const Persons = ({ deletePerson, filteredNumbers }) => {
   return filteredNumbers.map((person, i) => (
     // temporary key
-    <Person key={i} name={person.name} number={person.number} />
+    <Person
+      deletePerson={() => deletePerson(person.id)}
+      key={i}
+      name={person.name}
+      number={person.number}
+    />
   ));
 };
 
-const Person = ({ name, number }) => {
+const Person = ({ deletePerson, name, number }) => {
   return (
     <p>
-      {name} {number}
+      {name} {number} <button onClick={deletePerson}>delete</button>
     </p>
   );
 };
@@ -66,24 +71,31 @@ const App = () => {
     setNameFilter(event.target.value);
   };
 
+  const deletePerson = (id) => {
+    const person = persons.find((person) => person.id === id);
+    if (window.confirm(`Delete ${person.name} ?`))
+      personService.deletePerson(id).then((response) => {
+        console.log(response);
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+  };
+
   const addNumber = (event) => {
     event.preventDefault();
     for (const person of persons) {
       if (person.name === newName) {
         alert(`${newName} is already added to phonebook`);
-      } else {
-        const personObject = {
-          name: newName,
-          number: newNumber,
-        };
-        personService.create(personObject).then((returnedPerson) => {
-          setPersons(persons.concat(returnedPerson));
-          setNewName("");
-          setNewNumber("");
-        });
-        break;
       }
     }
+    const personObject = {
+      name: newName,
+      number: newNumber,
+    };
+    personService.create(personObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName("");
+      setNewNumber("");
+    });
   };
 
   const filteredNumbers = nameFilter
@@ -113,7 +125,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons filteredNumbers={filteredNumbers} />
+      <Persons deletePerson={deletePerson} filteredNumbers={filteredNumbers} />
     </div>
   );
 };
