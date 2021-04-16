@@ -82,20 +82,44 @@ const App = () => {
 
   const addNumber = (event) => {
     event.preventDefault();
-    for (const person of persons) {
-      if (person.name === newName) {
-        alert(`${newName} is already added to phonebook`);
+    const person = persons.find((person) => person.name === newName);
+    if (!person) {
+      // create
+      const personObject = {
+        name: newName,
+        number: newNumber,
+      };
+      personService.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        // setNewName("");
+        // setNewNumber("");
+      });
+    } else {
+      // update potentially
+      if (
+        window.confirm(
+          `${person.name} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const changedPerson = { ...person, number: newNumber };
+
+        personService
+          .update(person.id, changedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((p) => (p.id !== person.id ? p : returnedPerson))
+            );
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((error) => {
+            alert(
+              `the person '${person.name}' was already deleted from server`
+            );
+            setPersons(persons.filter((p) => p.id !== person.id));
+          });
       }
     }
-    const personObject = {
-      name: newName,
-      number: newNumber,
-    };
-    personService.create(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName("");
-      setNewNumber("");
-    });
   };
 
   const filteredNumbers = nameFilter
