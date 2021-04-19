@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import personService from "./services/persons";
+import "./index.css";
 
 const Filter = ({ nameFilter, handleNameFilterChange }) => {
-  return <input value={nameFilter} onChange={handleNameFilterChange} />;
+  return (
+    <>
+      filter shown with
+      <input value={nameFilter} onChange={handleNameFilterChange} />
+    </>
+  );
 };
 
 const PersonForm = ({
@@ -47,11 +53,20 @@ const Person = ({ deletePerson, name, number }) => {
   );
 };
 
+const Notification = ({ notification }) => {
+  if (notification === null) {
+    return null;
+  }
+
+  return <div className="notification">{notification}</div>;
+};
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -74,10 +89,13 @@ const App = () => {
   const deletePerson = (id) => {
     const person = persons.find((person) => person.id === id);
     if (window.confirm(`Delete ${person.name} ?`))
-      personService.deletePerson(id).then((response) => {
-        console.log(response);
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      personService
+        .deletePerson(id)
+        .then((response) => {
+          console.log(response);
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {});
   };
 
   const addNumber = (event) => {
@@ -91,8 +109,12 @@ const App = () => {
       };
       personService.create(personObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
-        // setNewName("");
-        // setNewNumber("");
+        setNotification(`Added ${returnedPerson.name}`);
+        setNewName("");
+        setNewNumber("");
+        setTimeout(() => {
+          setNotification(null);
+        }, 5000);
       });
     } else {
       // update potentially
@@ -109,8 +131,12 @@ const App = () => {
             setPersons(
               persons.map((p) => (p.id !== person.id ? p : returnedPerson))
             );
+            setNotification(`Updated ${returnedPerson.name}`);
             setNewName("");
             setNewNumber("");
+            setTimeout(() => {
+              setNotification(null);
+            }, 5000);
           })
           .catch((error) => {
             alert(
@@ -131,6 +157,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification notification={notification} />
 
       <Filter
         nameFilter={nameFilter}
