@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "harper lee",
-      "number": "917283221",
-      "id": 11
-    },
-    {
       "name": "terrence lee",
       "number": "9173212111111111",
       "id": 13
@@ -14,11 +9,6 @@
       "name": "daniel murphy",
       "number": "2837211234",
       "id": 14
-    },
-    {
-      "name": "noah syndergaard",
-      "number": "23",
-      "id": 15
     },
     {
       "name": "james timpson",
@@ -44,11 +34,6 @@
       "name": "tyrone pablo",
       "number": "9183232323",
       "id": 20
-    },
-    {
-      "name": "sf",
-      "number": "23",
-      "id": 21
     }
   ]
 }

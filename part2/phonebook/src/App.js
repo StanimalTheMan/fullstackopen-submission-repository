@@ -61,12 +61,21 @@ const Notification = ({ notification }) => {
   return <div className="notification">{notification}</div>;
 };
 
+const Error = ({ error }) => {
+  if (error === null) {
+    return null;
+  }
+
+  return <div className="error">{error}</div>;
+};
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
-  const [notification, setNotification] = useState(null);
+  const [notification, setNotification] = useState(null); // probably should just include error as a notification
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -139,9 +148,15 @@ const App = () => {
             }, 5000);
           })
           .catch((error) => {
-            alert(
-              `the person '${person.name}' was already deleted from server`
+            // alert(
+            //   `the person '${person.name}' was already deleted from server`
+            // );
+            setError(
+              `Information of ${person.name} has already been removed from server`
             );
+            setTimeout(() => {
+              setError(null);
+            }, 5000);
             setPersons(persons.filter((p) => p.id !== person.id));
           });
       }
@@ -158,7 +173,9 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
+      {/* one or the other will render atm */}
       <Notification notification={notification} />
+      <Error error={error} />
 
       <Filter
         nameFilter={nameFilter}
