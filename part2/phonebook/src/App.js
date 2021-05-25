@@ -116,15 +116,24 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-      personService.create(personObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNotification(`Added ${returnedPerson.name}`);
-        setNewName("");
-        setNewNumber("");
-        setTimeout(() => {
-          setNotification(null);
-        }, 5000);
-      });
+      personService
+        .create(personObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNotification(`Added ${returnedPerson.name}`);
+          setNewName("");
+          setNewNumber("");
+          setTimeout(() => {
+            setNotification(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          setError(error.response.data.error);
+          setTimeout(() => {
+            setError(null);
+          }, 5000);
+          console.log(error.response.data);
+        });
     } else {
       // update potentially
       if (
